@@ -12,9 +12,15 @@
     "fmt:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.453.0",
+    "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
