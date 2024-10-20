@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import { SidebarNavLayout } from '@/components/layouts/sidebar-nav';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 
 import './globals.css';
@@ -31,7 +32,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          {children}
+          <SidebarNavLayout>{children}</SidebarNavLayout>
         </ThemeProvider>
       </body>
     </html>

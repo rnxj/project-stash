@@ -7,7 +7,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { ButtonWithTooltip } from '@/components/custom/tooltip-button';
 
 const ThemeToggleFallback = () => (
-  <div className='border-input h-8 w-8 rounded-full border bg-background' />
+  <div className='h-8 w-8 animate-pulse rounded-full border border-input bg-muted' />
 );
 
 const ThemeToggleContent = () => {
