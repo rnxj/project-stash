@@ -104,7 +104,7 @@ export function NavUser() {
                   rel='noreferrer'
                   className='flex w-full cursor-pointer items-center gap-2 text-left text-sm'
                 >
-                  <span className='mx-1'>𝕏</span>Twitter
+                  <span className='mr-1'>𝕏</span>Twitter
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

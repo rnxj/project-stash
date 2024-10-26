@@ -1,5 +1,7 @@
 'use client';
 
+import { Fragment } from 'react';
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,16 +21,16 @@ export default function DynamicBreadcrumbs({ pathname }: { pathname: string }) {
       const isLast = index === paths.length - 1;
 
       return (
-        <BreadcrumbItem key={path}>
-          {isLast ? (
-            <BreadcrumbPage>{formatPathSegment(path)}</BreadcrumbPage>
-          ) : (
-            <>
+        <Fragment key={currentPath}>
+          <BreadcrumbItem>
+            {isLast ? (
+              <BreadcrumbPage>{formatPathSegment(path)}</BreadcrumbPage>
+            ) : (
               <BreadcrumbLink href={currentPath}>{formatPathSegment(path)}</BreadcrumbLink>
-              <BreadcrumbSeparator />
-            </>
-          )}
-        </BreadcrumbItem>
+            )}
+          </BreadcrumbItem>
+          {!isLast && <BreadcrumbSeparator />}
+        </Fragment>
       );
     });
   };
@@ -47,12 +49,10 @@ export default function DynamicBreadcrumbs({ pathname }: { pathname: string }) {
           {pathname === '/' ? (
             <BreadcrumbPage>Home</BreadcrumbPage>
           ) : (
-            <>
-              <BreadcrumbLink href='/'>Home</BreadcrumbLink>
-              <BreadcrumbSeparator />
-            </>
+            <BreadcrumbLink href='/'>Home</BreadcrumbLink>
           )}
         </BreadcrumbItem>
+        {pathname !== '/' && <BreadcrumbSeparator />}
         {generateBreadcrumbs()}
       </BreadcrumbList>
     </Breadcrumb>
