@@ -19,9 +19,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Cohort 3 Stash',
+  title: "Reuel's Project Stash",
   description:
-    "A showcase of projects from the Harkirat's Cohort 3, highlighting my skills and creativity.",
+    'A curated collection of my personal projects and experiments, showcasing a journey of learning, creativity, and development.',
 };
 
 export default function RootLayout({
