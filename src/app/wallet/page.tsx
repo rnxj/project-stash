@@ -15,7 +15,7 @@ import { useWalletFlow } from '@/projects/wallet/hooks/use-wallet-flow';
 import { useWalletStore } from '@/projects/wallet/hooks/use-wallet-store';
 
 export default function WalletPage() {
-  const { step, flow, setFlow, nextStep } = useWalletFlow();
+  const { step, flow, setFlow, nextStep, clearFlow } = useWalletFlow();
   const { isWalletCreated } = useWalletStore();
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function WalletPage() {
           <ImportWallet nextStep={nextStep} />
         );
       default:
-        return <WalletComplete />;
+        return <WalletComplete clearFlow={clearFlow} />;
     }
   };
 

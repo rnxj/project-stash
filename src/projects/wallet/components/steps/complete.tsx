@@ -6,13 +6,16 @@ import { Button } from '@/components/ui/button';
 
 import { useWalletStore } from '@/projects/wallet/hooks/use-wallet-store';
 
-interface WalletCompleteProps {}
+interface WalletCompleteProps {
+  clearFlow: () => void;
+}
 
-export const WalletComplete: React.FC<WalletCompleteProps> = () => {
+export const WalletComplete: React.FC<WalletCompleteProps> = ({ clearFlow }) => {
   const { setIsWalletCreated } = useWalletStore();
 
   const handleStartUsingWallet = () => {
     setIsWalletCreated(true);
+    clearFlow();
   };
 
   useEffect(() => {

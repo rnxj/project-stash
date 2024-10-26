@@ -12,6 +12,12 @@ export const useWalletFlow = () => {
     setStep(step + 1);
   };
 
+  const clearFlow = () => {
+    setStep(0);
+    setFlow('create');
+    setCompletedSteps([true, false, false, false]);
+  };
+
   return {
     step,
     setStep,
@@ -19,5 +25,6 @@ export const useWalletFlow = () => {
     setFlow,
     completedSteps,
     nextStep,
+    clearFlow,
   };
 };
