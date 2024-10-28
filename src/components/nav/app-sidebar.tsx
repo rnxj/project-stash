@@ -1,7 +1,6 @@
 'use client';
 
-import { faucet } from '@lucide/lab';
-import { Icon, TicketIcon, WalletIcon } from 'lucide-react';
+import { BoltIcon, TicketIcon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -53,9 +52,9 @@ const navGroups = [
       {
         type: 'normal' as const,
         data: {
-          title: 'Faucet',
-          url: '/faucet',
-          icon: (props: any) => <Icon iconNode={faucet} {...props} />,
+          title: 'Wallet Adapter UI',
+          url: '/wallet-adapter',
+          icon: BoltIcon,
         },
       },
     ],
@@ -91,8 +90,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Image src='/logo.svg' alt='Logo' width={40} height={40} />
                 </div>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-semibold'>Cohort 3</span>
-                  <span className='truncate text-xs'>Stash</span>
+                  <span className='truncate font-semibold'>Project Stash</span>
+                  <span className='truncate text-xs'>by Reuel Nixon</span>
                 </div>
               </a>
             </SidebarMenuButton>
