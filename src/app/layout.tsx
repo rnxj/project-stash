@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 
 import { SidebarNavLayout } from '@/components/layouts/sidebar-nav';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { WalletAdapterProvider } from '@/components/providers/wallet-adapter';
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
@@ -33,8 +34,10 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <SidebarNavLayout>{children}</SidebarNavLayout>
-          <Toaster />
+          <WalletAdapterProvider>
+            <SidebarNavLayout>{children}</SidebarNavLayout>
+            <Toaster />
+          </WalletAdapterProvider>
         </ThemeProvider>
       </body>
     </html>

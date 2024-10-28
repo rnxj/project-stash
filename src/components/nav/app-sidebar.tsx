@@ -1,6 +1,7 @@
 'use client';
 
-import { WalletIcon } from 'lucide-react';
+import { faucet } from '@lucide/lab';
+import { Icon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -47,6 +48,14 @@ const navGroups = [
           title: 'Wallet',
           url: '/wallet',
           icon: WalletIcon,
+        },
+      },
+      {
+        type: 'normal' as const,
+        data: {
+          title: 'Faucet',
+          url: '/faucet',
+          icon: (props: any) => <Icon iconNode={faucet} {...props} />,
         },
       },
     ],
