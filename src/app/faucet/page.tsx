@@ -107,9 +107,9 @@ export default function Component() {
               </div>
               <div className='space-y-4'>
                 <div className='flex items-center justify-between rounded-lg bg-muted p-3'>
-                  <Skeleton className='h-5 w-24' />
+                  <Skeleton className='h-5 w-12 sm:w-24' />
                   <div className='flex items-center'>
-                    <Skeleton className='mr-2 h-5 w-48' />
+                    <Skeleton className='mr-2 h-5 w-24 sm:w-48' />
                     <Skeleton className='h-4 w-4' />
                   </div>
                 </div>
