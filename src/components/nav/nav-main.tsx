@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ExternalLinkIcon } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -24,6 +24,15 @@ type NormalMenuData = {
   };
 };
 
+type LinkMenuData = {
+  type: 'link';
+  data: {
+    title: string;
+    url: string;
+    icon: React.ComponentType<any>;
+  };
+};
+
 type CollapsibleMenuData = {
   type: 'collapsible';
   data: {
@@ -38,7 +47,7 @@ type CollapsibleMenuData = {
   };
 };
 
-type NavMainItem = NormalMenuData | CollapsibleMenuData;
+type NavMainItem = NormalMenuData | CollapsibleMenuData | LinkMenuData;
 
 type NavGroup = {
   label: string;
@@ -105,6 +114,19 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                       ) : null}
                     </SidebarMenuItem>
                   </Collapsible>
+                );
+              } else if (menuItem.type === 'link') {
+                const item = menuItem.data;
+                return (
+                  <SidebarMenuItem key={`${groupIndex}-${itemIndex}`}>
+                    <SidebarMenuButton asChild tooltip={item.title}>
+                      <a href={item.url} target='_blank' rel='noopener noreferrer'>
+                        {item.icon ? <item.icon /> : null}
+                        <span>{item.title}</span>
+                        <ExternalLinkIcon className='ml-auto h-4 w-4' />
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 );
               }
               return null;

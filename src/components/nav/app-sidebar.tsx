@@ -1,7 +1,7 @@
 'use client';
 
 import { faucet } from '@lucide/lab';
-import { Icon, WalletIcon } from 'lucide-react';
+import { Icon, TicketIcon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -62,7 +62,16 @@ const navGroups = [
   },
   {
     label: 'Web Dev',
-    items: [],
+    items: [
+      {
+        type: 'link' as const,
+        data: {
+          title: 'ICVIT Landing Page',
+          url: 'https://icvit.vercel.app',
+          icon: TicketIcon,
+        },
+      },
+    ],
   },
   {
     label: 'DevOps',
