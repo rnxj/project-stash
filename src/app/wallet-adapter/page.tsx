@@ -1,35 +1,38 @@
 'use client';
 
+import { useWallet } from '@solana/wallet-adapter-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+import { WalletSkeleton } from '@/projects/wallet-adapter/components/skeleton';
 import { StyledWalletButton } from '@/projects/wallet-adapter/components/styled-wallet-button';
 import { WalletConnected } from '@/projects/wallet-adapter/components/wallet-connected';
 import { WalletDisconnected } from '@/projects/wallet-adapter/components/wallet-disconnected';
-import { WalletSkeleton } from '@/projects/wallet-adapter/components/wallet-skeleton';
-import { useCopyToClipboard } from '@/projects/wallet-adapter/hooks/useCopyToClipboard';
-import { useWalletBalance } from '@/projects/wallet-adapter/hooks/useWalletBalance';
-import { useWalletConnection } from '@/projects/wallet-adapter/hooks/useWalletConnection';
-import { useWalletTransactions } from '@/projects/wallet-adapter/hooks/useWalletTransactions';
+import { useCopyToClipboard } from '@/projects/wallet-adapter/hooks/use-copy-to-clipboard';
+import { useWalletBalance } from '@/projects/wallet-adapter/hooks/use-wallet-balance';
+import { useWalletTransactions } from '@/projects/wallet-adapter/hooks/use-wallet-transactions';
 
 export default function SolanaWallet() {
-  const { mounted, isConnected, publicKey } = useWalletConnection();
+  const { publicKey } = useWallet();
   const { balance, isRefreshing, getBalance } = useWalletBalance();
   const { isCopied, copyToClipboard } = useCopyToClipboard();
-  const {
-    isAirdropLoading,
-    isSendLoading,
-    getAirdrop,
-    sendSol,
-  } = useWalletTransactions(getBalance);
+  const [mounted, setMounted] = useState(false);
+
+  const { isAirdropLoading, isSendLoading, getAirdrop, sendSol } =
+    useWalletTransactions(getBalance);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return <WalletSkeleton />;
   }
 
   return (
-    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4'>
+    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-gradient-to-br from-background to-secondary/20'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -56,7 +59,7 @@ export default function SolanaWallet() {
           <CardContent className='space-y-6 p-6'>
             <StyledWalletButton />
             <AnimatePresence mode='wait'>
-              {isConnected && publicKey ? (
+              {publicKey ? (
                 <WalletConnected
                   key='connected'
                   publicKey={publicKey}

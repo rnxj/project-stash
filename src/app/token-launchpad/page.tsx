@@ -26,12 +26,12 @@ export default function TokenLaunchpadPage() {
   }
 
   return (
-    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-background p-4'>
+    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-background'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className='w-full max-w-3xl'
+        className='w-full max-w-2xl'
       >
         <Card className='shadow-lg'>
           <CardHeader className='bg-primary/5 text-center'>
@@ -52,7 +52,7 @@ export default function TokenLaunchpadPage() {
               <CardDescription>Create your own Token on Solana</CardDescription>
             </motion.div>
           </CardHeader>
-          <CardContent className='mt-6 space-y-6'>
+          <CardContent className='ga mt-6'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Wallet } from 'lucide-react';
 
 export const WalletDisconnected = () => {
   return (
@@ -10,8 +9,7 @@ export const WalletDisconnected = () => {
       transition={{ duration: 0.3 }}
       className='text-center text-muted-foreground'
     >
-      <Wallet className='mx-auto mb-2 h-12 w-12' />
-      <p>Wallet is not connected</p>
+      <p>Connect your wallet to continue</p>
     </motion.div>
   );
 };
