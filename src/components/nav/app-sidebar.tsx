@@ -1,6 +1,6 @@
 'use client';
 
-import { BoltIcon, TicketIcon, WalletIcon } from 'lucide-react';
+import { BoltIcon, RocketIcon, TicketIcon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -55,6 +55,14 @@ const navGroups = [
           title: 'Wallet Adapter UI',
           url: '/wallet-adapter',
           icon: BoltIcon,
+        },
+      },
+      {
+        type: 'normal' as const,
+        data: {
+          title: 'Token Launchpad',
+          url: '/token-launchpad',
+          icon: RocketIcon,
         },
       },
     ],
