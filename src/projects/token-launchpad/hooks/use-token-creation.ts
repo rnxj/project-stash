@@ -3,8 +3,11 @@ import {
   LENGTH_SIZE,
   TOKEN_2022_PROGRAM_ID,
   TYPE_SIZE,
+  createAssociatedTokenAccountInstruction,
   createInitializeMetadataPointerInstruction,
   createInitializeMintInstruction,
+  createMintToInstruction,
+  getAssociatedTokenAddressSync,
   getMintLen,
 } from '@solana/spl-token';
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
@@ -15,11 +18,12 @@ import { toast } from 'sonner';
 
 export const useTokenCreation = () => {
   const { connection } = useConnection();
-  const { publicKey, sendTransaction } = useWallet();
+  const wallet = useWallet();
   const [isCreatingToken, setIsCreatingToken] = useState(false);
   const [createdTokenMint, setCreatedTokenMint] = useState<string | null>(null);
+  const [associatedTokenAddress, setAssociatedTokenAddress] = useState<string | null>(null);
 
-  const createMint = async (
+  const createAndMintToken = async (
     connection: Connection,
     metadata: {
       name: string;
@@ -29,39 +33,47 @@ export const useTokenCreation = () => {
     payerPublicKey: PublicKey,
     decimals: number,
     mintAuthority: PublicKey,
-    freezeAuthority: PublicKey | null
+    freezeAuthority: PublicKey | null,
+    initialSupply: number
   ) => {
     if (!payerPublicKey) throw new Error('Wallet not connected');
 
-    const keypair = Keypair.generate();
+    const mintKeypair = Keypair.generate();
 
     const formattedMetadata = {
       name: metadata.name,
       symbol: metadata.symbol,
       uri: metadata.uri,
-      mint: keypair.publicKey,
+      mint: mintKeypair.publicKey,
       additionalMetadata: [],
     };
     const mintLen = getMintLen([ExtensionType.MetadataPointer]);
     const metadataLen = TYPE_SIZE + LENGTH_SIZE + pack(formattedMetadata).length;
     const lamports = await connection.getMinimumBalanceForRentExemption(mintLen + metadataLen);
 
+    const associatedToken = getAssociatedTokenAddressSync(
+      mintKeypair.publicKey,
+      payerPublicKey,
+      false,
+      TOKEN_2022_PROGRAM_ID
+    );
+
     const transaction = new Transaction().add(
       SystemProgram.createAccount({
         fromPubkey: payerPublicKey,
-        newAccountPubkey: keypair.publicKey,
+        newAccountPubkey: mintKeypair.publicKey,
         space: mintLen,
         lamports,
         programId: TOKEN_2022_PROGRAM_ID,
       }),
       createInitializeMetadataPointerInstruction(
-        keypair.publicKey,
+        mintKeypair.publicKey,
         mintAuthority,
-        keypair.publicKey,
+        mintKeypair.publicKey,
         TOKEN_2022_PROGRAM_ID
       ),
       createInitializeMintInstruction(
-        keypair.publicKey,
+        mintKeypair.publicKey,
         decimals,
         mintAuthority,
         freezeAuthority,
@@ -69,30 +81,48 @@ export const useTokenCreation = () => {
       ),
       createInitializeInstruction({
         programId: TOKEN_2022_PROGRAM_ID,
-        mint: keypair.publicKey,
-        metadata: keypair.publicKey,
+        mint: mintKeypair.publicKey,
+        metadata: mintKeypair.publicKey,
         name: metadata.name,
         symbol: metadata.symbol,
         uri: metadata.uri,
         mintAuthority,
         updateAuthority: mintAuthority,
-      })
+      }),
+      createAssociatedTokenAccountInstruction(
+        payerPublicKey,
+        associatedToken,
+        payerPublicKey,
+        mintKeypair.publicKey,
+        TOKEN_2022_PROGRAM_ID
+      ),
+      createMintToInstruction(
+        mintKeypair.publicKey,
+        associatedToken,
+        payerPublicKey,
+        initialSupply * 10 ** decimals,
+        [],
+        TOKEN_2022_PROGRAM_ID
+      )
     );
+
     transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
     transaction.feePayer = payerPublicKey;
-    transaction.partialSign(keypair);
+    transaction.partialSign(mintKeypair);
 
-    const signature = await sendTransaction(transaction, connection);
+    const signature = await wallet.sendTransaction(transaction, connection);
     await connection.confirmTransaction(signature, 'confirmed');
-    return keypair.publicKey;
+    return [mintKeypair.publicKey, associatedToken];
   };
 
   const handleCreateToken = async (values: {
     tokenName: string;
     tokenSymbol: string;
     tokenMetadataUri: string;
+    enableFreeze: boolean;
+    initialSupply: string;
   }) => {
-    if (!publicKey) {
+    if (!wallet.publicKey) {
       toast.error('Wallet not connected', {
         description: 'Please connect your wallet to create a token',
         richColors: true,
@@ -103,27 +133,29 @@ export const useTokenCreation = () => {
 
     setIsCreatingToken(true);
     try {
-      const mint = await createMint(
+      const [mint, associatedToken] = await createAndMintToken(
         connection,
         {
           name: values.tokenName,
           symbol: values.tokenSymbol,
           uri: values.tokenMetadataUri,
         },
-        publicKey,
+        wallet.publicKey,
         6,
-        publicKey,
-        null
+        wallet.publicKey,
+        values.enableFreeze ? wallet.publicKey : null,
+        Number(values.initialSupply)
       );
 
       setCreatedTokenMint(mint.toString());
-      toast.success('Token created successfully', {
+      setAssociatedTokenAddress(associatedToken.toString());
+      toast.success('Token created and minted successfully', {
         description: `Mint address: ${mint.toString()}`,
         richColors: true,
         duration: 5000,
       });
     } catch (error) {
-      toast.error('Error creating token', {
+      toast.error('Error creating and minting token', {
         description: error instanceof Error ? error.message : 'An unknown error occurred',
         richColors: true,
         duration: 5000,
@@ -136,6 +168,7 @@ export const useTokenCreation = () => {
   return {
     isCreatingToken,
     createdTokenMint,
+    associatedTokenAddress,
     handleCreateToken,
   };
 };

@@ -15,7 +15,8 @@ import { StyledWalletButton } from '@/projects/wallet-adapter/components/styled-
 export default function TokenLaunchpadPage() {
   const { publicKey } = useWallet();
   const [isMounted, setIsMounted] = useState(false);
-  const { isCreatingToken, createdTokenMint, handleCreateToken } = useTokenCreation();
+  const { isCreatingToken, createdTokenMint, associatedTokenAddress, handleCreateToken } =
+    useTokenCreation();
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,12 +53,12 @@ export default function TokenLaunchpadPage() {
               <CardDescription>Create your own Token on Solana</CardDescription>
             </motion.div>
           </CardHeader>
-          <CardContent className='ga mt-6'>
+          <CardContent className='mt-6 space-y-6'>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className='mb-6 flex justify-center'
+              className='flex justify-center'
             >
               <StyledWalletButton />
             </motion.div>
@@ -79,7 +80,12 @@ export default function TokenLaunchpadPage() {
                 <p className='text-muted-foreground'>Connect your wallet to create a token</p>
               </motion.div>
             )}
-            {createdTokenMint && <CreatedTokenDisplay mintAddress={createdTokenMint} />}
+            {createdTokenMint && associatedTokenAddress && (
+              <CreatedTokenDisplay
+                mintAddress={createdTokenMint}
+                associatedTokenAddress={associatedTokenAddress}
+              />
+            )}
           </CardContent>
         </Card>
       </motion.div>
