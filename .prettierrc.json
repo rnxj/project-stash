@@ -7,7 +7,7 @@
   "jsxSingleQuote": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
 
-  "importOrder": ["@/components/(.*)$", "@/projects/(.*)$", "^[./]"],
+  "importOrder": ["@/components/(.*)$", "@/projects/(.*)$", "@/lib/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }
