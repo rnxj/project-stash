@@ -20,10 +20,6 @@ export default function SolanaWallet() {
   const {
     isAirdropLoading,
     isSendLoading,
-    recipientAddress,
-    setRecipientAddress,
-    amount,
-    setAmount,
     getAirdrop,
     sendSol,
   } = useWalletTransactions(getBalance);
@@ -72,10 +68,6 @@ export default function SolanaWallet() {
                   getAirdrop={getAirdrop}
                   isAirdropLoading={isAirdropLoading}
                   sendSol={sendSol}
-                  recipientAddress={recipientAddress}
-                  setRecipientAddress={setRecipientAddress}
-                  amount={amount}
-                  setAmount={setAmount}
                   isSendLoading={isSendLoading}
                 />
               ) : (

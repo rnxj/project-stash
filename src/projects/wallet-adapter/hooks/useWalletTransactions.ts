@@ -8,8 +8,6 @@ export const useWalletTransactions = (getBalance: () => Promise<void>) => {
   const { publicKey, sendTransaction } = useWallet();
   const [isAirdropLoading, setIsAirdropLoading] = useState(false);
   const [isSendLoading, setIsSendLoading] = useState(false);
-  const [recipientAddress, setRecipientAddress] = useState('');
-  const [amount, setAmount] = useState('');
 
   const getAirdrop = async (sol: number) => {
     setIsAirdropLoading(true);
@@ -34,18 +32,37 @@ export const useWalletTransactions = (getBalance: () => Promise<void>) => {
         getBalance();
       }
     } catch (err) {
-      toast.error('Airdrop failed', {
-        description: 'You are rate limited for Airdrop. Please try again later.',
-        richColors: true,
-        duration: 5000,
-      });
+      if (err instanceof Error && err.message.includes('Failed to fetch')) {
+        toast.error('Network error', {
+          description: 'Please check your internet connection and try again',
+          richColors: true,
+          duration: 5000,
+        });
+      } else {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        if (errorMessage.includes('429')) {
+          const messageMatch = errorMessage.match(/"message":"([^"]+)"/);
+          if (messageMatch) {
+            toast.error('Airdrop failed', {
+              description: messageMatch[1],
+              richColors: true,
+              duration: 5000,
+            });
+            return;
+          }
+        }
+        toast.error('Airdrop failed', {
+          description: errorMessage,
+          richColors: true,
+          duration: 5000,
+        });
+      }
     } finally {
       setIsAirdropLoading(false);
     }
   };
 
-  const sendSol = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const sendSol = async (recipientAddress: string, amount: number) => {
     setIsSendLoading(true);
 
     if (!publicKey) {
@@ -60,7 +77,7 @@ export const useWalletTransactions = (getBalance: () => Promise<void>) => {
 
     try {
       const recipientPubKey = new PublicKey(recipientAddress);
-      const amountLamports = parseFloat(amount) * LAMPORTS_PER_SOL;
+      const amountLamports = amount * LAMPORTS_PER_SOL;
 
       const transaction = new Transaction().add(
         SystemProgram.transfer({
@@ -78,9 +95,6 @@ export const useWalletTransactions = (getBalance: () => Promise<void>) => {
         richColors: true,
         duration: 5000,
       });
-
-      setRecipientAddress('');
-      setAmount('');
       getBalance();
     } catch (error: any) {
       toast.error('Transaction failed', {
@@ -96,10 +110,6 @@ export const useWalletTransactions = (getBalance: () => Promise<void>) => {
   return {
     isAirdropLoading,
     isSendLoading,
-    recipientAddress,
-    setRecipientAddress,
-    amount,
-    setAmount,
     getAirdrop,
     sendSol,
   };

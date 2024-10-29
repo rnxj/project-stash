@@ -2,16 +2,16 @@
 
 import { PublicKey } from '@solana/web3.js';
 import { motion } from 'framer-motion';
-import { Check, Copy, CreditCard, Loader2, RefreshCw, Send } from 'lucide-react';
-import { useState } from 'react';
+import { Check, Copy, RefreshCw } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-interface WalletConnectedProps {
+import { AirdropForm } from '@/projects/wallet-adapter/components/forms/airdrop-form';
+import { WalletSendForm } from '@/projects/wallet-adapter/components/forms/send-form';
+
+interface WalletInterfaceProps {
   publicKey: PublicKey;
   balance: number | null;
   isRefreshing: boolean;
@@ -20,11 +20,7 @@ interface WalletConnectedProps {
   isCopied: boolean;
   getAirdrop: (sol: number) => Promise<void>;
   isAirdropLoading: boolean;
-  sendSol: (event: React.FormEvent) => Promise<void>;
-  recipientAddress: string;
-  setRecipientAddress: (value: string) => void;
-  amount: string;
-  setAmount: (value: string) => void;
+  sendSol: (recipientAddress: string, amount: number) => Promise<void>;
   isSendLoading: boolean;
 }
 
@@ -90,101 +86,7 @@ const BalanceDisplay: React.FC<{
   </motion.div>
 );
 
-const AirdropTab: React.FC<{
-  getAirdrop: (sol: number) => Promise<void>;
-  isAirdropLoading: boolean;
-}> = ({ getAirdrop, isAirdropLoading }) => {
-  const [airdropAmount, setAirdropAmount] = useState('0.1');
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.5 }}
-      className='space-y-4'
-    >
-      <div>
-        <Label htmlFor='airdropAmount'>Airdrop Amount (SOL)</Label>
-        <Input
-          id='airdropAmount'
-          type='number'
-          step='0.000000001'
-          min='0'
-          value={airdropAmount}
-          onChange={(e) => setAirdropAmount(e.target.value)}
-          required
-        />
-      </div>
-      <Button
-        onClick={() => getAirdrop(parseFloat(airdropAmount))}
-        disabled={isAirdropLoading}
-        className='w-full bg-primary text-primary-foreground transition-all duration-200 ease-in-out hover:bg-primary/90 hover:shadow-md disabled:opacity-50'
-      >
-        {isAirdropLoading ? (
-          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-        ) : (
-          <CreditCard className='mr-2 h-4 w-4' />
-        )}
-        {isAirdropLoading ? 'Processing...' : 'Get Airdrop'}
-      </Button>
-    </motion.div>
-  );
-};
-
-const SendTab: React.FC<{
-  sendSol: (event: React.FormEvent) => Promise<void>;
-  recipientAddress: string;
-  setRecipientAddress: (value: string) => void;
-  amount: string;
-  setAmount: (value: string) => void;
-  isSendLoading: boolean;
-}> = ({ sendSol, recipientAddress, setRecipientAddress, amount, setAmount, isSendLoading }) => (
-  <motion.form
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.4, duration: 0.5 }}
-    onSubmit={sendSol}
-    className='space-y-4'
-  >
-    <div>
-      <Label htmlFor='recipient'>Recipient Address</Label>
-      <Input
-        id='recipient'
-        placeholder="Enter recipient's public key"
-        value={recipientAddress}
-        onChange={(e) => setRecipientAddress(e.target.value)}
-        required
-      />
-    </div>
-    <div>
-      <Label htmlFor='amount'>Amount (SOL)</Label>
-      <Input
-        id='amount'
-        type='number'
-        step='0.000000001'
-        min='0'
-        placeholder='Enter amount to send'
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        required
-      />
-    </div>
-    <Button
-      type='submit'
-      disabled={isSendLoading}
-      className='w-full bg-primary text-primary-foreground transition-all duration-200 ease-in-out hover:bg-primary/90 hover:shadow-md disabled:opacity-50'
-    >
-      {isSendLoading ? (
-        <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-      ) : (
-        <Send className='mr-2 h-4 w-4' />
-      )}
-      {isSendLoading ? 'Sending...' : 'Send SOL'}
-    </Button>
-  </motion.form>
-);
-
-export const WalletConnected: React.FC<WalletConnectedProps> = ({
+export function WalletConnected({
   publicKey,
   balance,
   isRefreshing,
@@ -194,12 +96,8 @@ export const WalletConnected: React.FC<WalletConnectedProps> = ({
   getAirdrop,
   isAirdropLoading,
   sendSol,
-  recipientAddress,
-  setRecipientAddress,
-  amount,
-  setAmount,
   isSendLoading,
-}) => {
+}: WalletInterfaceProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -220,19 +118,12 @@ export const WalletConnected: React.FC<WalletConnectedProps> = ({
           <TabsTrigger value='send'>Send</TabsTrigger>
         </TabsList>
         <TabsContent value='airdrop'>
-          <AirdropTab getAirdrop={getAirdrop} isAirdropLoading={isAirdropLoading} />
+          <AirdropForm getAirdrop={getAirdrop} isAirdropLoading={isAirdropLoading} />
         </TabsContent>
         <TabsContent value='send'>
-          <SendTab
-            sendSol={sendSol}
-            recipientAddress={recipientAddress}
-            setRecipientAddress={setRecipientAddress}
-            amount={amount}
-            setAmount={setAmount}
-            isSendLoading={isSendLoading}
-          />
+          <WalletSendForm sendSol={sendSol} isSendLoading={isSendLoading} />
         </TabsContent>
       </Tabs>
     </motion.div>
   );
-};
+}
