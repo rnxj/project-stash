@@ -54,7 +54,7 @@ export default function WalletPage() {
   };
 
   return (
-    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-background text-foreground'>
+    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-background p-4 text-foreground'>
       <div className='w-full max-w-2xl space-y-8 p-0 sm:p-4 md:p-8'>
         <AnimatePresence mode='wait'>{renderStep()}</AnimatePresence>
       </div>
