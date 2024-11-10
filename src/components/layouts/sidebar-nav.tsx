@@ -1,10 +1,12 @@
 'use client';
 
+import { Github } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Suspense, lazy, useEffect, useState } from 'react';
 
 import { AppSidebar } from '@/components/nav/app-sidebar';
 import { ThemeToggle } from '@/components/nav/theme-toggle';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
@@ -40,6 +42,16 @@ export function SidebarNavLayout({ children }: { children: React.ReactNode }) {
           </div>
           <div className='flex items-center gap-2 px-3'>
             <ThemeToggle />
+            <Button variant='outline' size='icon' asChild className='rounded-full'>
+              <a
+                href='https://github.com/rnxj/project-stash'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <Github className='h-5 w-5' />
+                <span className='sr-only'>GitHub Repository</span>
+              </a>
+            </Button>
           </div>
         </header>
         <div className='flex flex-1 flex-col gap-4'>{children}</div>
