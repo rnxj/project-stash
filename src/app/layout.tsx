@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -39,6 +40,7 @@ export default function RootLayout({
             <Toaster />
           </WalletAdapterProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
