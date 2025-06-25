@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const WalletSkeleton = () => {
   return (
-    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-gradient-to-br from-background to-secondary/20'>
+    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-linear-to-br from-background to-secondary/20'>
       <div className='w-full max-w-2xl'>
         <Card className='overflow-hidden shadow-lg'>
           <CardHeader className='bg-primary/5 text-center'>

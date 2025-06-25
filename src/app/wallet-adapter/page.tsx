@@ -32,7 +32,7 @@ export default function SolanaWallet() {
   }
 
   return (
-    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4'>
+    <div className='flex min-h-[calc(100vh-96px)] items-center justify-center bg-linear-to-br from-background to-secondary/20 p-4'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -46,15 +46,15 @@ export function CreatedTokenDisplay({
             className='w-full justify-between text-sm font-normal'
             onClick={() => copyToClipboard(address)}
           >
-            <Icon className='mr-2 h-4 w-4 flex-shrink-0' />
+            <Icon className='mr-2 h-4 w-4 shrink-0' />
             <span className='lg:truncate-none truncate'>
               <span className='lg:hidden'>{truncateAddress(address)}</span>
               <span className='hidden lg:inline'>{address}</span>
             </span>
             {isCopied ? (
-              <Check className='ml-2 h-4 w-4 flex-shrink-0 text-green-500' />
+              <Check className='ml-2 h-4 w-4 shrink-0 text-green-500' />
             ) : (
-              <Copy className='ml-2 h-4 w-4 flex-shrink-0' />
+              <Copy className='ml-2 h-4 w-4 shrink-0' />
             )}
           </Button>
         </TooltipTrigger>

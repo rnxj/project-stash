@@ -24,7 +24,7 @@ export const RecoveryPhraseDisplay = ({ phrase }: { phrase: string[] }) => {
       onMouseLeave={() => setIsRecoveryPhraseRevealed(false)}
     >
       <motion.div
-        className='absolute inset-0 z-10 flex items-center justify-center bg-secondary/80 backdrop-blur-sm'
+        className='absolute inset-0 z-10 flex items-center justify-center bg-secondary/80 backdrop-blur-xs'
         initial={{ opacity: 1 }}
         animate={{ opacity: isRecoveryPhraseRevealed ? 0 : 1 }}
         transition={{ duration: 0.2 }}
