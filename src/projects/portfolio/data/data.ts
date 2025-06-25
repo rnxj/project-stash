@@ -105,24 +105,23 @@ export const toolsData = [
 
 export const projectsData = [
   {
+    title: 'WareWise',
+    type: 'Web App',
+    pages: 'Multiple Pages',
+    theme: 'System Theme',
+    description: 'A modern inventory management system for small businesses',
+    link: 'warewise.rnxj.dev',
+    image: '/portfolio/projects/warewise.png',
+  },
+  {
     title: 'Project Stash',
     type: 'Portfolio',
     pages: '4 Pages',
     theme: 'Dark Theme',
     description:
       'A curated collection of personal projects showcasing Web3, web development, and DevOps side projects.',
-    link: 'project-stash.vercel.app',
+    link: 'rnxj.dev',
     image: '/portfolio/projects/stash.png',
-  },
-  {
-    title: 'PrintPilot',
-    type: 'Productivity',
-    pages: '3 Pages',
-    theme: 'Light Theme',
-    description:
-      'Simplified printing queues for students, saving time with a straightforward upload-to-print process.',
-    link: 'printpilot.vercel.app',
-    image: '/portfolio/projects/printpilot.png',
   },
   {
     title: 'FREEdium',

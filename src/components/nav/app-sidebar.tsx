@@ -1,6 +1,6 @@
 'use client';
 
-import { BoltIcon, RocketIcon, TicketIcon, WalletIcon } from 'lucide-react';
+import { BoltIcon, PackageOpen, RocketIcon, TicketIcon, WalletIcon } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -78,12 +78,20 @@ const navGroups = [
           icon: TicketIcon,
         },
       },
+      {
+        type: 'link' as const,
+        data: {
+          title: 'Warewise',
+          url: 'https://warewise.rnxj.dev',
+          icon: PackageOpen,
+        },
+      },
     ],
   },
-  {
-    label: 'DevOps',
-    items: [],
-  },
+  // {
+  //   label: 'DevOps',
+  //   items: [],
+  // },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

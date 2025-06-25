@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { FolderGit2, Link2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -57,9 +58,16 @@ export function ProjectsSection({ projects }: ProjectsProps) {
                   <span className='text-xs text-muted-foreground'>{project.theme}</span>
                 </div>
                 <p className='mb-4 text-sm text-muted-foreground'>{project.description}</p>
-                <Button variant='outline' size='sm' className='w-full gap-2'>
-                  <Link2 className='h-4 w-4' />
-                  {project.link}
+                <Button variant='outline' size='sm' className='w-full gap-2' asChild>
+                  <Link
+                    href={
+                      project.link.startsWith('http') ? project.link : `https://${project.link}`
+                    }
+                    target='_blank'
+                  >
+                    <Link2 className='h-4 w-4' />
+                    {project.link}
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
