@@ -24,6 +24,27 @@ export const metadata: Metadata = {
   title: "Reuel's Project Stash",
   description:
     'A curated collection of my personal projects and experiments, showcasing a journey of learning, creativity, and development.',
+  openGraph: {
+    title: "Reuel's Project Stash",
+    description:
+      'A curated collection of my personal projects and experiments, showcasing a journey of learning, creativity, and development.',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: "Reuel's Project Stash",
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Reuel's Project Stash",
+    description:
+      'A curated collection of my personal projects and experiments, showcasing a journey of learning, creativity, and development.',
+    images: ['/og.png'],
+  },
 };
 
 export default function RootLayout({
