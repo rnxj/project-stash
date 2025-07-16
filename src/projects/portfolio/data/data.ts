@@ -105,6 +105,15 @@ export const toolsData = [
 
 export const projectsData = [
   {
+    title: 'PhonePe Gateway',
+    type: 'Web App',
+    pages: 'Multiple Pages',
+    theme: 'System Theme',
+    description: 'A complete PhonePe payment gateway integration with Next.js.',
+    link: 'phonepe.rnxj.dev',
+    image: '/portfolio/projects/phonepe.png',
+  },
+  {
     title: 'WareWise',
     type: 'Web App',
     pages: 'Multiple Pages',

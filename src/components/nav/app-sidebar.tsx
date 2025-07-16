@@ -1,6 +1,13 @@
 'use client';
 
-import { BoltIcon, PackageOpen, RocketIcon, TicketIcon, WalletIcon } from 'lucide-react';
+import {
+  BoltIcon,
+  CreditCardIcon,
+  PackageOpen,
+  RocketIcon,
+  TicketIcon,
+  WalletIcon,
+} from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -70,6 +77,14 @@ const navGroups = [
   {
     label: 'Web Dev',
     items: [
+      {
+        type: 'link' as const,
+        data: {
+          title: 'PhonePe PG + Next.js',
+          url: 'https://phonepe.rnxj.dev',
+          icon: CreditCardIcon,
+        },
+      },
       {
         type: 'link' as const,
         data: {
